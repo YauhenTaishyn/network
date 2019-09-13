@@ -8,20 +8,14 @@ import {BrowserRouter} from "react-router-dom";
 import {Provider} from "react-redux";
 
 
-let rerenderEntireTree = (state) => {
+
     ReactDOM.render(
-        <Provider store={store}>
-            <BrowserRouter>
-                <App state={state} dispatch={store.dispatch.bind(store)} store={store}
-                    // addPost = {store.dispatch.bind(store)}
-                />
-            </BrowserRouter> </Provider>, document.getElementById('root'));
-}
-rerenderEntireTree(store.getState())
-store.subscribe(() => {
-    let state = store.getState();
-    rerenderEntireTree(state)
-});
+        <BrowserRouter>
+            <Provider store={store}>
+                <App/>
+            </Provider>
+        </BrowserRouter>, document.getElementById('root'));
+
 
 
 // If you want your  to work offline and load faster, you can change

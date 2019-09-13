@@ -1,45 +1,52 @@
-const ADD_POST = 'ADD-POST';
-const UPDATE_NEW_POST_TEXT = 'UPDATE-NEW-POST-TEXT';
+const FOLLOW = 'FOLLOW';
+const UNFOLLOW = 'UNFOLLOW';
+const SET_USERS = 'SET_USERS';
 
 
-let initialState ={
-    posts: [
-        {id: 1, message: 'hello, how are you ?', likesCount: 10},
-        {id: 2, message: 'I am fine !', likesCount: 2},
+let initialState = {
+    users: [
+
+
+
     ],
-    newPostText: 'hello world'
+
 };
 
+const usersReducer = (state = initialState, action) => {
+    switch (action.type) {
+        case FOLLOW:
+            return {
+                ...state,
+                //users: [...state.users],
+                users: state.users.map(u => {
+                    if (u.id === action.userId) {
+                        return {...u, followed: true}
+                    }
+                    return u;
+                })
+            };
+        case UNFOLLOW:
+            return {
+                ...state,
+                users: state.users.map(u => {
+                    if (u.id === action.userId) {
+                        return {...u, followed: false}
+                    }
+                    return u;
 
+                })
+            };
+        case  SET_USERS: {
+            return {...state, users: [...state.users, ...action.users]}
+        }
 
- const profileReducer  = (state = initialState,action) => {
-     switch (action.type) {
-         case ADD_POST : {
-             let newPost = {
-                 id: 5,
-                 message: state.newPostText,
-                 likesCount: 0
-             };
-             return  {
-                 ...state,
-                 posts : [...state.posts, newPost],
-                 newPostText : ''
-             };
-         }
-         case UPDATE_NEW_POST_TEXT: {
-             return  {
-                 ...state,
-                 newPostText : action.newText
-             };
-         }
-     }
-
-    return state;
+        default:
+            return state;
+    }
 };
 
-export const addPostActionCreator = () => ({type: ADD_POST})
-export const updateNewPostTextActionCreator = (text) => ({
-    type: UPDATE_NEW_POST_TEXT,
-    newText: text
-})
- export default profileReducer;
+export const followAC = (userId) => ({type: FOLLOW, userId});
+export const unfollowAC = (userId) => ({type: UNFOLLOW, userId});
+export const setUsersAC = (users) => ({type: SET_USERS, users});
+
+export default usersReducer;
